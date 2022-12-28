@@ -1,0 +1,77 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: lightcyan;
+        }
+
+        .heading {
+            text-align: center;
+            color: blue;
+        }
+
+        .myinput {
+            background-color: bisque;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .section {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h3 class="heading">Image Resizing Application</h3>
+    <div class="content">
+        <div class="section">
+            <label for="Width">Enter Width :</label>
+            <input type="number" class="myinput" id="Width"><br>
+        </div>
+        <div class="section">
+            <label for="Height">Enter Height :</label>
+            <input type="number" class="myinput" id="Height"><br>
+        </div>
+        <div class="section">
+            <input type="file" id="image-input" accept="image/*"><br>
+        </div>
+        <div class="section">
+            <button onclick="myFunction()">submit</button>
+        </div>
+
+        <img id="preview"></img>
+    </div>
+</body>
+<script>
+    function myFunction() {
+        var w = parseInt(document.getElementById("Width").value);
+        var h = parseInt(document.getElementById("Height").value);
+        var f = document.querySelector('input[type=file]').files;
+        console.log(w, h, f);
+        if (f.length) {
+            let imageFile = f[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.createElement("img");
+                img.onload = function (event) {
+                    //canvas element
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    //resizing image
+                    ctx.drawImage(img, 0, 0, w, h);
+                    // Show resized image in preview element
+                    var dataurl = canvas.toDataURL(imageFile.type);
+                    document.getElementById("preview").src = dataurl;
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(imageFile);
+        }
+    }
+</script>
+
+</html>
